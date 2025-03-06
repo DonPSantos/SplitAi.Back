@@ -17,6 +17,18 @@ builder.Configuration
         optional: true,
         reloadOnChange: true);
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularLocalhost",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200") // URL do Angular
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -68,7 +80,8 @@ app.UseSwaggerUI(options =>
 
 app.UseExceptionHandler();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
+app.UseCors("AllowAngularLocalhost");
 
 app.UseAuthorization();
 
