@@ -18,6 +18,10 @@ namespace Domain.Services
         {
             var person = new Person(name, email);
 
+            var existingPerson = await GetPersonByEmail(email);
+            if (existingPerson != null)
+                return existingPerson;
+
             await _personRepository.Create(person);
 
             await _personRepository.SaveChanges();
